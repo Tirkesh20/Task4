@@ -1,9 +1,13 @@
 package com.company.beans.airCraft;
 
-public class AirLiner extends AirCraft{
+import com.company.enums.AirLineClasses;
+
+import java.io.Serializable;
+
+public class AirLiner extends AirCraft implements Serializable {
 
     private int passengerCapacity;
-    private int maxPassengerCapacity;
+    private AirLineClasses airLineClasses;
 
     public int getPassengerCapacity() {
         return passengerCapacity;
@@ -13,23 +17,27 @@ public class AirLiner extends AirCraft{
         this.passengerCapacity = passengerCapacity;
     }
 
-    public int getMaxPassengerCapacity() {
-        return maxPassengerCapacity;
+    public AirLineClasses getAirLineClasses() {
+        return airLineClasses;
     }
 
-    public void setMaxPassengerCapacity(int maxPassengerCapacity) {
-        this.maxPassengerCapacity = maxPassengerCapacity;
+    public void setAirLineClasses(AirLineClasses airLineClasses) {
+        this.airLineClasses = airLineClasses;
+    }
+
+    public AirLiner(float height, float length, float fuelCapacity, float fuelConsumption, float takeOffWeight, int passengerCapacity, AirLineClasses airLineClasses) {
+        super(height, length, fuelCapacity, fuelConsumption, takeOffWeight);
+        this.passengerCapacity = passengerCapacity;
+        this.airLineClasses = airLineClasses;
     }
 
     public AirLiner(float height, float length, float fuelCapacity, float fuelConsumption, float takeOffWeight, int passengerCapacity, int maxPassengerCapacity) {
         super(height, length, fuelCapacity, fuelConsumption, takeOffWeight);
         this.passengerCapacity = passengerCapacity;
-        this.maxPassengerCapacity = maxPassengerCapacity;
     }
 
-    public AirLiner(int passengerCapacity, int maxPassengerCapacity) {
+    public AirLiner(int passengerCapacity) {
         this.passengerCapacity = passengerCapacity;
-        this.maxPassengerCapacity = maxPassengerCapacity;
     }
 
     public AirLiner() {
