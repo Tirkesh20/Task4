@@ -14,6 +14,6 @@ public interface DAO <T>{
 
     public Iterator<T> select() throws IOException, DaoException;
 
-    public void update();
+    public void update(T t);
 
 }

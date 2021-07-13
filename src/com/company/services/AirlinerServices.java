@@ -6,7 +6,9 @@ import com.company.exceptions.DaoException;
 import com.company.exceptions.ServiceException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class AirlinerServices implements Services<AirLiner> {
     private final AirlinerDao airlinerDao=new AirlinerDao();
@@ -21,6 +23,7 @@ public class AirlinerServices implements Services<AirLiner> {
 
     }
 
+
     @Override
     public Iterator read() throws ServiceException {
         try {
@@ -32,15 +35,29 @@ public class AirlinerServices implements Services<AirLiner> {
 
     @Override
     public void update(AirLiner airLiner) {
-        try {
-            airlinerDao.update();
-        }
+        airlinerDao.update(airLiner);
     }
 
     @Override
-    public boolean delete(AirLiner airLiner) {
-        return false;
+    public boolean delete(AirLiner airLiner) throws ServiceException {
+        try {
+           return airlinerDao.delete(airLiner);
+        } catch (DaoException | IOException e) {
+            throw new ServiceException(e.getMessage());
+        }
     }
 
+    public AirLiner findByFuelConsumption(float fuelConsumption) throws ServiceException {
+        Iterator<AirLiner> iterator=read();
+        while (iterator.hasNext()){
+            AirLiner airLiner=iterator.next();
+            if (Float.compare(airLiner.getFuelConsumption(), fuelConsumption) == 1) {
+                return airLiner;
+            }
+        }
+        return null;
+    }
 
 }
+
+

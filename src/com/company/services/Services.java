@@ -12,6 +12,6 @@ public interface Services<T> {
 
     public void update(T t);
 
-    public boolean delete(T t);
+    public boolean delete(T t) throws ServiceException;
 
 }
