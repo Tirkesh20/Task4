@@ -9,25 +9,40 @@ import java.util.Iterator;
 import java.util.Set;
 
 public class AirlinerDao implements DAO<AirLiner>{
-      Set<AirLiner> airLiners;
-    FileOutputStream fileOutputStream = null;
-    ObjectOutputStream objectOutputStream = null;
-    ObjectInputStream objectInputStream = null;
-    FileInputStream fileInputStream=null;
-        File file=new File("dataBase.txt");
+   private Set<AirLiner> airLiners;
+   private FileOutputStream fileOutputStream = null;
+   private ObjectOutputStream objectOutputStream = null;
+   private ObjectInputStream objectInputStream = null;
+   private FileInputStream fileInputStream=null;
+   private final File file=new File("dataBase.txt");
+
+    {
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     @Override
-    public void insert(AirLiner airLiner) throws IOException {
+    public void insert(AirLiner airLiner) throws IOException, DaoException {
         try {
-             fileInputStream=new FileInputStream(file);
-             objectInputStream=new ObjectInputStream(fileInputStream);
-            airLiners= (Set<AirLiner>) objectInputStream.readObject();
+            if (file.length()==0) {
+                airLiners = new HashSet<>();
+            }else {
+                fileInputStream=new FileInputStream(file);
+                objectInputStream=new ObjectInputStream(fileInputStream);
+                airLiners= (Set<AirLiner>) objectInputStream.readObject();
+            }
             airLiners.add(airLiner);
-             fileOutputStream=new FileOutputStream(file);
+            fileOutputStream=new FileOutputStream(file);
              objectOutputStream=new ObjectOutputStream(fileOutputStream);
             objectOutputStream.writeObject(airLiners);
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }finally {
+        throw new DaoException(e.getMessage());
+        } finally {
             if (objectOutputStream!=null){
                 objectOutputStream.close();
             }
@@ -44,6 +59,7 @@ public class AirlinerDao implements DAO<AirLiner>{
         fileOutputStream=new FileOutputStream(file);
         objectOutputStream=new ObjectOutputStream(fileOutputStream);
         objectOutputStream.writeObject(airLiners);
+        return true;
         }catch (IOException | ClassNotFoundException e){
             throw new DaoException();
         }finally {
@@ -51,11 +67,10 @@ public class AirlinerDao implements DAO<AirLiner>{
                 objectOutputStream.close();
             }
         }
-        return true;
     }
 
     @Override
-    public Iterator<AirLiner> select() throws IOException {
+    public Iterator<AirLiner> select() throws IOException, DaoException {
         Iterator<AirLiner> iterator=null;
         try {
             fileInputStream=new FileInputStream(file);
@@ -63,15 +78,29 @@ public class AirlinerDao implements DAO<AirLiner>{
             airLiners=(Set<AirLiner>) objectInputStream.readObject();
             return airLiners.iterator();
     } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            throw new DaoException();
         }finally {
            fileInputStream.close();
         }
-        return iterator;
     }
 
     @Override
-    public void update() {
-
+    public void update(AirLiner airLiner) {
+        if (file.length() == 0){
+            return ;
+        }
+        try {
+            fileInputStream=new FileInputStream(file);
+            objectInputStream=new ObjectInputStream(fileInputStream);
+            airLiners=(Set<AirLiner>) objectInputStream.readObject();
+            Iterator iterator=select();
+            while (iterator.hasNext()){
+                if (iterator.next().equals(airLiner)){
+                    iterator.remove();
+                }
+            }
+        } catch (IOException | ClassNotFoundException | DaoException e) {
+            e.printStackTrace();
+        }
     }
 }

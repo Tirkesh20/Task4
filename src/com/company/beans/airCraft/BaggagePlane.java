@@ -1,5 +1,7 @@
 package com.company.beans.airCraft;
 
+import java.util.Objects;
+
 public class BaggagePlane extends AirCraft{
 
     private float baggageCapacity;
@@ -35,5 +37,30 @@ public class BaggagePlane extends AirCraft{
     }
 
     public BaggagePlane() {
+
+    }
+
+    @Override
+    public String toString() {
+        return "BaggagePlane{" +
+                "baggageCapacity=" + baggageCapacity +
+                ", maxBaggageCapacity=" + maxBaggageCapacity +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BaggagePlane that = (BaggagePlane) o;
+        return Float.compare(that.baggageCapacity, baggageCapacity) == 0 && Float.compare(that.maxBaggageCapacity, maxBaggageCapacity) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        int result=5;
+        result=result*12+Double.hashCode(baggageCapacity);
+        result=result*12+Double.hashCode(maxBaggageCapacity);
+        return result;
     }
 }

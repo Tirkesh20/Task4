@@ -3,6 +3,7 @@ package com.company.beans.airCraft;
 import com.company.enums.AirLineClasses;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class AirLiner extends AirCraft implements Serializable {
 
@@ -41,5 +42,26 @@ public class AirLiner extends AirCraft implements Serializable {
     }
 
     public AirLiner() {
+    }
+
+    @Override
+    public String toString() {
+        return "AirLiner{" +
+                "passengerCapacity=" + passengerCapacity +
+                ", airLineClasses=" + airLineClasses +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AirLiner airLiner = (AirLiner) o;
+        return passengerCapacity == airLiner.passengerCapacity && airLineClasses == airLiner.airLineClasses;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(passengerCapacity, airLineClasses);
     }
 }

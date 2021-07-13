@@ -1,12 +1,17 @@
 package com.company.services;
 
+import com.company.exceptions.ServiceException;
+
+import java.util.Iterator;
+
 public interface Services<T> {
 
-    public void  add();
+    public void  creat(T t) throws ServiceException;
 
-    public boolean delete();
+    public Iterator read() throws ServiceException;
 
-    public T read();
+    public void update(T t);
 
-    public void update();
+    public boolean delete(T t);
+
 }

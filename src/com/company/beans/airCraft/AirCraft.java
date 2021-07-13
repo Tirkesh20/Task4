@@ -56,6 +56,7 @@ public class AirCraft {
         this.takeOffWeight = takeOffWeight;
     }
 
-    public AirCraft() {
+    public AirCraft(){
+
     }
 }
