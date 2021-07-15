@@ -6,9 +6,7 @@ import com.company.exceptions.DaoException;
 import com.company.exceptions.ServiceException;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 public class AirlinerServices implements Services<AirLiner> {
     private final AirlinerDao airlinerDao=new AirlinerDao();
@@ -25,7 +23,7 @@ public class AirlinerServices implements Services<AirLiner> {
 
 
     @Override
-    public Iterator read() throws ServiceException {
+    public Iterator<AirLiner> read() throws ServiceException {
         try {
            return airlinerDao.select();
         }catch (DaoException|IOException exception){
@@ -47,17 +45,33 @@ public class AirlinerServices implements Services<AirLiner> {
         }
     }
 
-    public AirLiner findByFuelConsumption(float fuelConsumption) throws ServiceException {
+    public AirLiner findByFuelConsumption(float fuelConsumptionStartPoint,float fuelConsumptionEndPoint) throws ServiceException {
         Iterator<AirLiner> iterator=read();
         while (iterator.hasNext()){
             AirLiner airLiner=iterator.next();
-            if (Float.compare(airLiner.getFuelConsumption(), fuelConsumption) == 1) {
+            float consumption=airLiner.getFuelConsumption();
+            if (consumption == fuelConsumptionStartPoint||
+                    consumption>fuelConsumptionStartPoint&&
+                            consumption<=fuelConsumptionEndPoint) {
                 return airLiner;
             }
         }
         return null;
     }
 
+    public AirLiner findByPassengerCapacity(int passengerCapacityStartPoint,int passengerCapacityEndPoint) throws ServiceException {
+        Iterator<AirLiner> iterator=read();
+        while (iterator.hasNext()){
+            AirLiner airLiner=iterator.next();
+            int capacity=airLiner.getPassengerCapacity();
+            if (capacity == passengerCapacityStartPoint||
+                    capacity>passengerCapacityStartPoint&&
+                            capacity<=passengerCapacityEndPoint){
+                return airLiner;
+            }
+        }
+        return null;
+    }
 }
 
 

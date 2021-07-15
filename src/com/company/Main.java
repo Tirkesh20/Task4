@@ -21,12 +21,8 @@ public class Main {
             airlinerDao.insert(airLiner);
             airlinerDao.insert(airLiner1);
             airlinerDao.delete(airLiner);
-            Iterator iterator=airlinerDao.select();
-            while (iterator.hasNext()){
-                System.out.println(iterator.next());
-            }
         }catch (Exception e){
-            System.out.println("ex");
+            System.out.println(e.getMessage());
         }
     }
 }

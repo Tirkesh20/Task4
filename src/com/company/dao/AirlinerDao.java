@@ -34,7 +34,7 @@ public class AirlinerDao implements DAO<AirLiner>{
             }else {
                 fileInputStream=new FileInputStream(file);
                 objectInputStream=new ObjectInputStream(fileInputStream);
-                airLiners= (Set<AirLiner>) objectInputStream.readObject();
+               airLiners= (Set<AirLiner>) objectInputStream.readObject();
             }
             airLiners.add(airLiner);
             fileOutputStream=new FileOutputStream(file);
